@@ -4,6 +4,26 @@
              xmlns:local="clr-namespace:write_erase_project"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="TextBlock">
+            <Setter Value="Comic Sans MS" Property="FontFamily"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Value="Comic Sans MS" Property="FontFamily"/>
+        </Style>
+        <Style TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="IsMouseCaptureWithin" Value="True">
+                    <Setter Property="Background" Value="#76E383"/>
+                </Trigger>
+            </Style.Triggers>
+            <Style.Setters>
+                <Setter Property="Background" Value="#76E383"/>
+                <Setter Property="FontFamily" Value="Comic Sans MS"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Style.Setters>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="FontFamily" Value="Comic Sans MS"/>
+        </Style>
     </Application.Resources>
 </Application>

@@ -41,9 +41,16 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="PdfSharp, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.50.5147\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.50.5147\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
@@ -69,8 +76,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>baseModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DBHelper.cs" />
-    <Compile Include="frameClass.cs" />
+    <Compile Include="classes\DBHelper.cs" />
+    <Compile Include="windows\editProductWindow.xaml.cs">
+      <DependentUpon>editProductWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\formAnOrder.xaml.cs">
+      <DependentUpon>formAnOrder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="classes\frameClass.cs" />
+    <Compile Include="windows\main.xaml.cs">
+      <DependentUpon>main.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Manufacturer.cs">
       <DependentUpon>baseModel.tt</DependentUpon>
     </Compile>
@@ -80,9 +96,15 @@
     <Compile Include="OrderProduct.cs">
       <DependentUpon>baseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="classes\orderProductList.cs" />
+    <Compile Include="pages\ordersListPage.xaml.cs">
+      <DependentUpon>ordersListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OrderStatus.cs">
       <DependentUpon>baseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="classes\partialForPickupPoint.cs" />
+    <Compile Include="classes\partialForUser.cs" />
     <Compile Include="PickupPoint.cs">
       <DependentUpon>baseModel.tt</DependentUpon>
     </Compile>
@@ -92,6 +114,10 @@
     <Compile Include="ProductCategory.cs">
       <DependentUpon>baseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="pages\productListPage.xaml.cs">
+      <DependentUpon>productListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="classes\productsForOrder.cs" />
     <Compile Include="Provider.cs">
       <DependentUpon>baseModel.tt</DependentUpon>
     </Compile>
@@ -104,6 +130,19 @@
     <Compile Include="User.cs">
       <DependentUpon>baseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="classes\values.cs" />
+    <Page Include="windows\editProductWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\formAnOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\main.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -126,6 +165,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="pages\ordersListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="pages\productListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -172,6 +219,9 @@
       <DependentUpon>baseModel.edmx</DependentUpon>
       <LastGenOutput>baseModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\picture.png" />
+    <Resource Include="Resources\icon.ico" />
+    <Resource Include="Resources\logo.png" />
     <Resource Include="Resources\A346R4.jpg" />
     <Resource Include="Resources\A543T6.jpg" />
     <Resource Include="Resources\B730E2.jpg" />

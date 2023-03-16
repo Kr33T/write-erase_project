@@ -5,8 +5,65 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:write_erase_project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Icon="/Resources/icon.ico"
+        Title="ООО «Пиши-стирай» - магазин по продаже канцелярских товаров" Height="450" Width="300">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3.5*" Name="capchaRow"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Image Source="/Resources/logo.png" Width="100" Height="100"/>
+            <TextBlock Text="Пиши-стирай" VerticalAlignment="Center" Margin="10" FontSize="20" FontFamily="Comic Sans MS"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Text="Логин" VerticalAlignment="Center" Grid.Column="0" HorizontalAlignment="Right" FontSize="16" Margin="0 0 15 0"/>
+            <TextBox Width="100" Height="25" Grid.Column="1" HorizontalAlignment="Left" Name="loginTB" Text="loginDEpxl2018"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Пароль" VerticalAlignment="Center" Grid.Column="0" HorizontalAlignment="Right" Margin="0 0 15  0" FontSize="16"/>
+            <PasswordBox Width="100" Height="25" Grid.Column="1" HorizontalAlignment="Left" Name="passwordTB" Password="P6h4Jq"/>
+
+        </Grid>
+
+        <Grid Grid.Row="3" Visibility="Collapsed" Name="capchaEnteringG">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Canvas Name="canvas" Grid.Row="0" Width="200" Height="90"/>
+            <StackPanel Orientation="Vertical" Grid.Row="1">
+                <TextBlock Text="Введите текст с картинки" HorizontalAlignment="Center" FontSize="15"/>
+                <TextBox Name="capchaTB" Width="200"/>
+                <TextBlock Name="timer" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+        
+        <Grid Grid.Row="4" Name="buttonsGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Content="Войти" Name="etnerBTN" Click="etnerBTN_Click" Margin="5" Grid.Column="0" Width="100" Height="35"/>
+            <Button Content="Войти как гость" Name="guestBTN" Click="guestBTN_Click" Margin="5" Grid.Column="1" Width="100" Height="35"/>
+        </Grid>
         
     </Grid>
 </Window>

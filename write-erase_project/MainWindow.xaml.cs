@@ -77,6 +77,8 @@ namespace write_erase_project
                                 capchaTB.Text = "";
                                 capchaEnteringG.Visibility = Visibility.Collapsed;
                                 attemptCount = 0;
+                                capchaRow.Height = new GridLength(0);
+                                this.Height = 300;
                             };
                         }
                         else
@@ -109,6 +111,8 @@ namespace write_erase_project
                             capchaTB.Text = "";
                             capchaEnteringG.Visibility = Visibility.Collapsed;
                             attemptCount = 0;
+                            capchaRow.Height = new GridLength(0);
+                            this.Height = 300;
                         };
                     }
                 }

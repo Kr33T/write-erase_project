@@ -40,7 +40,7 @@ namespace write_erase_project
             if (sec != 0)
             {
                 sec--;
-                timer.Text = $"Осталось {sec} секунд!";
+                timer.Text = $"Осталось {sec} секунд";
             }
             else
             {
@@ -122,7 +122,7 @@ namespace write_erase_project
                     attemptCount++;
                     if (attemptCount == 1)
                     {
-                        int procent = (int)this.Height / 100 * 41;
+                        int procent = (int)(this.Height / 100 * 41) + 60;
                         capchaRow.Height = new GridLength(procent);
                         this.Height = 450;
                         capchaEnteringG.Visibility = Visibility.Visible;
@@ -131,7 +131,7 @@ namespace write_erase_project
                     }
                     if (attemptCount >= 2)
                     {
-                        timer.Text = $"Осталось 10 секунд!";
+                        timer.Text = $"Осталось 10 секунд";
                         sec = 10;
                         updateCapcha();
                         dispatcherTimer.Start();
@@ -139,6 +139,10 @@ namespace write_erase_project
                         buttonsGrid.IsEnabled = false;
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Поля логина и/или пароля пустые", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

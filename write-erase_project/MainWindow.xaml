@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:write_erase_project"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         Icon="/Resources/icon.ico"
         Title="ООО «Пиши-стирай» - магазин по продаже канцелярских товаров" Height="450" Width="300">
     <Grid>

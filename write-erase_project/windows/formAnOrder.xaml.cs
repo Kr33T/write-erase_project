@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using Color = System.Windows.Media.Color;
 using Image = System.Windows.Controls.Image;
+using System.Text.RegularExpressions;
 
 namespace write_erase_project
 {
@@ -165,19 +166,26 @@ namespace write_erase_project
         {
             try
             {
-                if (!(sender as TextBox).Text.Equals("0"))
+                if (Regex.IsMatch((sender as TextBox).Text, "^[0-9]+$"))
                 {
-                    string article = (sender as TextBox).Uid.ToString();
-                    values.products.FirstOrDefault(x => x.product.ProductArticleNumber == article).count = Convert.ToInt32((sender as TextBox).Text);
-                    refreshCost();
+                    if (!(sender as TextBox).Text.Equals("0"))
+                    {
+                        string article = (sender as TextBox).Uid.ToString();
+                        values.products.FirstOrDefault(x => x.product.ProductArticleNumber == article).count = Convert.ToInt32((sender as TextBox).Text);
+                        refreshCost();
+                    }
+                    else
+                    {
+                        string article = (sender as TextBox).Uid.ToString();
+                        productsForOrder p = values.products.FirstOrDefault(x => x.product.ProductArticleNumber == article);
+                        values.products.Remove(p);
+
+                        refreshLV();
+                    }
                 }
                 else
                 {
-                    string article = (sender as TextBox).Uid.ToString();
-                    productsForOrder p = values.products.FirstOrDefault(x => x.product.ProductArticleNumber == article);
-                    values.products.Remove(p);
-
-                    refreshLV();
+                    (sender as TextBox).Text = "1";
                 }
             }
             catch
@@ -285,6 +293,8 @@ namespace write_erase_project
             gfx.DrawString("Сумма со скидкой: " + sumDis.ToString(), font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
             height += 25;
             gfx.DrawString("Пункт выдачи: " + order.PickupPoint.fullNameOfPoint.ToString(), font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
+            height += 25;
+            gfx.DrawString("Дата получения заказа: " + order.OrderDeliveryDate.ToString("dd MM yyyy"), font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
             height += 25;
             if (order.User != null)
             {

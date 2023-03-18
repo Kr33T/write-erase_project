@@ -170,27 +170,33 @@ namespace write_erase_project
             values.orders.Clear();
             refreshList();
 
-            switch (sortCB.SelectedIndex)
+            if (sortCB.SelectedIndex != 0)
             {
-                case 1:
-                    values.orders = values.orders.OrderBy(x => x.cost).ToList();
-                    break;
-                case 2:
-                    values.orders = values.orders.OrderByDescending(x => x.cost).ToList();
-                    break;
+                switch (sortCB.SelectedIndex)
+                {
+                    case 1:
+                        values.orders = values.orders.OrderBy(x => x.cost).ToList();
+                        break;
+                    case 2:
+                        values.orders = values.orders.OrderByDescending(x => x.cost).ToList();
+                        break;
+                }
             }
 
-            switch (filterCB.SelectedIndex)
+            if (filterCB.SelectedIndex != 0)
             {
-                case 1:
-                    values.orders = values.orders.Where(x => x.discount <= 10).ToList();
-                    break;
-                case 2:
-                    values.orders = values.orders.Where(x => x.discount > 10 && x.discount <= 14).ToList();
-                    break;
-                case 3:
-                    values.orders = values.orders.Where(x => x.discount >= 15).ToList();
-                    break;
+                switch (filterCB.SelectedIndex)
+                {
+                    case 1:
+                        values.orders = values.orders.Where(x => x.discount <= 10).ToList();
+                        break;
+                    case 2:
+                        values.orders = values.orders.Where(x => x.discount > 10 && x.discount <= 14).ToList();
+                        break;
+                    case 3:
+                        values.orders = values.orders.Where(x => x.discount >= 15).ToList();
+                        break;
+                }
             }
 
             orderLV.ItemsSource = values.orders;

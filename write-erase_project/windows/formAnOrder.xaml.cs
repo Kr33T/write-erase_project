@@ -5,6 +5,8 @@ using PdfSharp.Pdf.Advanced;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using Color = System.Windows.Media.Color;
+using Image = System.Windows.Controls.Image;
 
 namespace write_erase_project
 {
@@ -240,7 +244,7 @@ namespace write_erase_project
             DBHelper.bE.SaveChanges();
             values.products.Clear();
             values.selectedPoint = 0;
-            MessageBox.Show("Заказ успешно оформлен!\nВам доступен талон для получения заказа.");
+            MessageBox.Show("Заказ успешно оформлен!\nВам доступен талон для получения заказа.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
             formingPdfTicket(order.OrderID);
             this.Close();
         }
@@ -251,55 +255,51 @@ namespace write_erase_project
             List<OrderProduct> op = DBHelper.bE.OrderProduct.Where(x => x.OrderID == order.OrderID).ToList();
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "PDF files(*.pdf)|*.pdf|All files(*.*)|*.*";
-            if (sfd.ShowDialog() == true)
+            PdfDocument pdf = new PdfDocument();
+            pdf.Info.Title = "Талон для получения заказа";
+            PdfPage page = pdf.AddPage();
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+            XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
+            XFont font = new XFont("Comic sans ms", 20);
+            XFont fontCode = new XFont("Comic sans ms", 20, XFontStyle.Bold, options);
+
+            gfx.DrawString("Дата заказа: " + order.OrderDate.ToString("dd MM yyyy"), font, XBrushes.Black, new XRect(0, -355, page.Width, page.Height), XStringFormat.Center);
+            gfx.DrawString("Номер заказа: " + orderID.ToString(), font, XBrushes.Black, new XRect(0, -320, page.Width, page.Height), XStringFormat.Center);
+            gfx.DrawString("Состав заказа:", font, XBrushes.Black, new XRect(0, -300, page.Width, page.Height), XStringFormat.Center);
+            int height = -280;
+            foreach (var item in DBHelper.bE.OrderProduct.Where(x => x.OrderID == order.OrderID))
             {
-                PdfDocument pdf = new PdfDocument();
-                pdf.Info.Title = "Талон для получения заказа";
-                PdfPage page = pdf.AddPage();
-                XGraphics gfx = XGraphics.FromPdfPage(page);
-                XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
-                XFont font = new XFont("Comic sans ms", 20);
-                XFont fontCode = new XFont("Comic sans ms", 20, XFontStyle.Bold, options);
-
-                gfx.DrawString("Дата заказа: " + order.OrderDate.ToString("dd MM yyyy"), font, XBrushes.Black, new XRect(0, -355, page.Width, page.Height), XStringFormat.Center);
-                gfx.DrawString("Номер заказа: " + orderID.ToString(), font, XBrushes.Black, new XRect(0, -320, page.Width, page.Height), XStringFormat.Center);
-                gfx.DrawString("Состав заказа:", font, XBrushes.Black, new XRect(0, -300, page.Width, page.Height), XStringFormat.Center);
-                int height = -280;
-                foreach (var item in DBHelper.bE.OrderProduct.Where(x => x.OrderID == order.OrderID))
-                {
-                    gfx.DrawString($"{item.Product.ProductArticleNumber}: {item.Product.ProductName} ({item.CountProduct} {item.Product.Unit.UnitName})", font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
-                    height += 25;
-                }
-
-                double sum = 0, sumDis = 0;
-                foreach (var item2 in DBHelper.bE.OrderProduct.Where(x => x.OrderID == order.OrderID))
-                {
-                    sum += (double)item2.Product.ProductCost * item2.CountProduct;
-                    sumDis += (double)(item2.Product.ProductCost - (item2.Product.ProductCost / 100 * item2.Product.ProductDiscountAmount)) * item2.CountProduct;
-                }
+                gfx.DrawString($"{item.Product.ProductArticleNumber}: {item.Product.ProductName} ({item.CountProduct} {item.Product.Unit.UnitName})", font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
                 height += 25;
-                gfx.DrawString("Сумма заказа: " + sum.ToString(), font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
-                height += 25;
-                gfx.DrawString("Сумма со скидкой: " + sumDis.ToString(), font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
-                height += 25;
-                gfx.DrawString("Пункт выдачи: " + order.PickupPoint.fullNameOfPoint.ToString(), font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
-                height += 25;
-                if (order.User != null)
-                {
-                    gfx.DrawString("Пользователь: " + order.User.userFullName.ToString(), font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
-                    height += 25;
-                }
-                else
-                {
-                    gfx.DrawString("Пользователь: Гость", font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
-                    height += 25;
-                }
-                gfx.DrawString("Ваш код для получения заказа " + order.ReceiptCode.ToString(), fontCode, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
-                sfd.FileName = $"Талон для получения заказа №{order.OrderID}.pdf";
-                pdf.Save(sfd.FileName);
-                Process.Start(sfd.FileName);
             }
+
+            double sum = 0, sumDis = 0;
+            foreach (var item2 in DBHelper.bE.OrderProduct.Where(x => x.OrderID == order.OrderID))
+            {
+                sum += (double)item2.Product.ProductCost * item2.CountProduct;
+                sumDis += (double)(item2.Product.ProductCost - (item2.Product.ProductCost / 100 * item2.Product.ProductDiscountAmount)) * item2.CountProduct;
+            }
+            height += 25;
+            gfx.DrawString("Сумма заказа: " + sum.ToString(), font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
+            height += 25;
+            gfx.DrawString("Сумма со скидкой: " + sumDis.ToString(), font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
+            height += 25;
+            gfx.DrawString("Пункт выдачи: " + order.PickupPoint.fullNameOfPoint.ToString(), font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
+            height += 25;
+            if (order.User != null)
+            {
+                gfx.DrawString("Пользователь: " + order.User.userFullName.ToString(), font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
+                height += 25;
+            }
+            else
+            {
+                gfx.DrawString("Пользователь: Гость", font, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
+                height += 25;
+            }
+            gfx.DrawString("Ваш код для получения заказа " + order.ReceiptCode.ToString(), fontCode, XBrushes.Black, new XRect(0, height, page.Width, page.Height), XStringFormat.Center);
+            sfd.FileName = $"Талон для получения заказа №{order.OrderID}.pdf";
+            pdf.Save(sfd.FileName);
+            Process.Start(sfd.FileName);
         }
 
         private void pickupPointCB_SelectionChanged(object sender, SelectionChangedEventArgs e)

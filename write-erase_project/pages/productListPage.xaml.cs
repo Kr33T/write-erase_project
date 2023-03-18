@@ -170,7 +170,7 @@ namespace write_erase_project
 
             if(values.products.Where(x=>x.product == p).Count() > 0)
             {
-                MessageBox.Show("Такой продукт уже добавлен в заказ");
+                MessageBox.Show("Такой продукт уже добавлен в заказ!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -194,7 +194,7 @@ namespace write_erase_project
             formAnOrder window = new formAnOrder();
             if (isWindowOpened)
             {
-                MessageBox.Show("Окно уже открыто");
+                MessageBox.Show("Окно уже открыто", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -217,7 +217,7 @@ namespace write_erase_project
             editProductWindow window = new editProductWindow();
             if (isWindowOpened)
             {
-                MessageBox.Show("Окно уже открыто");
+                MessageBox.Show("Окно уже открыто", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -260,7 +260,7 @@ namespace write_erase_project
 
             if (isWindowOpened)
             {
-                MessageBox.Show("Окно уже открыто");
+                MessageBox.Show("Окно уже открыто", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {

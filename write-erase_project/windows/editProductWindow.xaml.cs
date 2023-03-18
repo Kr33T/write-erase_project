@@ -126,7 +126,7 @@ namespace write_erase_project.windows
 
                 DBHelper.bE.Product.Remove(product);
                 DBHelper.bE.SaveChanges();
-                MessageBox.Show("Продукт успешно удален!");
+                MessageBox.Show("Продукт успешно удален!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }
         }
@@ -153,7 +153,7 @@ namespace write_erase_project.windows
                             product.ProductPhoto = file;
 
                             DBHelper.bE.SaveChanges();
-                            MessageBox.Show("Изменения внесены");
+                            MessageBox.Show("Изменения успешно внесены", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
                             this.Close();
                         }
                         else
@@ -182,23 +182,23 @@ namespace write_erase_project.windows
 
                             DBHelper.bE.Product.Add(p);
                             DBHelper.bE.SaveChanges();
-                            MessageBox.Show("Продукт добавлен");
+                            MessageBox.Show("Продукт успешно добавлен", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
                             this.Close();
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Скидка не может быть больше 100");
+                        MessageBox.Show("Скидка не может быть больше 100", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Проверьте правильность данных в полях \"Цена\", \"Скидка\", \"Количество на складе\"");
+                    MessageBox.Show("Проверьте правильность данных в полях \"Цена\", \"Скидка\", \"Количество на складе\"", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Заполнены не все необходимые поля!");
+                MessageBox.Show("Заполнены не все необходимые поля!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -212,16 +212,23 @@ namespace write_erase_project.windows
 
         private void addImageBTN_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.ShowDialog();
-            file = ofd.FileName.Substring(ofd.FileName.LastIndexOf('\\') + 1);
-
-            string path = Environment.CurrentDirectory.Replace("bin\\Debug", $"Resources");
-            if (!File.Exists(path += $"\\{file}"))
+            try
             {
-                File.Copy(ofd.FileName, path);
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.ShowDialog();
+                file = ofd.FileName.Substring(ofd.FileName.LastIndexOf('\\') + 1);
+
+                string path = Environment.CurrentDirectory.Replace("bin\\Debug", $"Resources");
+                if (!File.Exists(path += $"\\{file}"))
+                {
+                    File.Copy(ofd.FileName, path);
+                }
+                productImage.Source = new BitmapImage(new Uri(path));
             }
-            productImage.Source = new BitmapImage(new Uri(path));
+            catch
+            {
+
+            }
         }
     }
 }
